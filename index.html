@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <script src="app.js" defer></script>
+
 <body>
 
   <div class="container" id="login-section">
@@ -16,17 +18,25 @@
   </div>
 
   <div class="container" id="app-section" style="display: none;">
-    <h2>Bonjour, <span id="user-name"></span> 👋</h2>
-    
+    <!-- Nouveau bloc de profil -->
+    <div class="profile-header">
+      <img src="https://ui-avatars.com/api/?name=J&background=7C3AED&color=fff" alt="Profil" class="profile-pic">
+      <div class="profile-text">
+        <span class="greeting-text">Hello,</span>
+        <h2 id="user-name" class="name-text"></h2>
+      </div>
+    </div>
+
     <input type="text" id="task-input" placeholder="Que devez-vous faire ?">
     <button onclick="addTask()">Ajouter la tâche</button>
 
     <ul id="task-list"></ul>
 
-<!-- Nouveaux éléments à ajouter -->
-<h3 id="completed-title" style="display: none; margin-top: 20px; font-size: 16px; color: #555;">Tâches finalisées</h3>
-<ul id="completed-task-list"></ul>
-    
+    <!-- Nouveaux éléments à ajouter -->
+    <h3 id="completed-title" style="display: none; margin-top: 20px; font-size: 16px; color: #555;">Tâches finalisées
+    </h3>
+    <ul id="completed-task-list"></ul>
+
     <button class="logout-btn" onclick="logout()">Se déconnecter</button>
   </div>
 
@@ -36,4 +46,5 @@
   <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore-compat.js"></script>
 
 </body>
+
 </html>

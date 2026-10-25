@@ -1,84 +1,137 @@
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
 
-:root {
-  --bg-main: #0F0E17;
-  --bg-card: #1E1C2A;
-  --purple-accent: #7C3AED;
-  --text-main: #FFFFFF;
-  --text-muted: #9CA3AF;
-}
+    :root {
+        --bg-main: #0F0E17;
+        --bg-card: #1E1C2A;
+        --purple-accent: #7C3AED;
+        --text-main: #FFFFFF;
+        --text-muted: #9CA3AF;
+    }
 
-body {
-  font-family: 'Inter', sans-serif;
-  background-color: var(--bg-main);
-  color: var(--text-main);
-  display: flex;
-  justify-content: center;
-  padding: 20px;
-  margin: 0;
-}
+    body {
+        font-family: 'Inter', sans-serif;
+        background-color: var(--bg-main);
+        color: var(--text-main);
+        display: flex;
+        justify-content: center;
+        padding: 20px;
+        margin: 0;
+    }
 
-.container {
-  background-color: var(--bg-card);
-  width: 100%;
-  max-width: 400px;
-  padding: 30px;
-  border-radius: 24px;
-  box-shadow: 0 15px 35px rgba(0,0,0,0.4);
-}
+    .container {
+        background-color: var(--bg-card);
+        width: 100%;
+        max-width: 400px;
+        padding: 30px;
+        border-radius: 24px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+    }
+
     /* Boutons principaux */
-button {
-  background-color: var(--purple-accent);
-  color: var(--text-main);
-  border: none;
-  padding: 14px 20px;
-  border-radius: 12px;
-  font-weight: 600;
-  font-size: 15px;
-  cursor: pointer;
-  width: 100%;
-  transition: background-color 0.2s ease;
-  margin-bottom: 10px;
-}
+    button {
+        background-color: var(--purple-accent);
+        color: var(--text-main);
+        border: none;
+        padding: 14px 20px;
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: 15px;
+        cursor: pointer;
+        width: 100%;
+        transition: background-color 0.2s ease;
+        margin-bottom: 10px;
+    }
 
-button:hover {
-  background-color: #6D28D9; /* Un violet légèrement plus foncé */
-}
-    .logout-btn { background-color: #dc3545; }
-    .logout-btn:hover { background-color: #c82333; }
-   /* Champ de saisie (Input) */
-input {
-  width: calc(100% - 32px);
-  padding: 14px 16px;
-  margin-bottom: 16px;
-  background-color: #2A273A;
-  border: 1px solid #3F3C53;
-  border-radius: 12px;
-  color: var(--text-main);
-  font-family: inherit;
-}
+    button:hover {
+        background-color: #6D28D9;
+        /* Un violet légèrement plus foncé */
+    }
 
-input::placeholder {
-  color: var(--text-muted);
-}
-ul { list-style-type: none; padding: 0; text-align: left; }
-/* Apparence d'une tâche active */
-li {
-  background-color: #2A273A;
-  color: var(--text-main);
-  margin-bottom: 12px;
-  padding: 16px;
-  border-radius: 12px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
+    .logout-btn {
+        background-color: #dc3545;
+    }
 
-/* Apparence d'une tâche finalisée */
-.completed {
-  background-color: transparent;
-  border: 1px solid #3F3C53;
-  color: var(--text-muted);
-  text-decoration: line-through;
-}
-.delete-btn { background-color: transparent; color: red; width: auto; padding: 5px; margin: 0; font-weight: bold; }
+    .logout-btn:hover {
+        background-color: #c82333;
+    }
+
+    /* Champ de saisie (Input) */
+    input {
+        width: calc(100% - 32px);
+        padding: 14px 16px;
+        margin-bottom: 16px;
+        background-color: #2A273A;
+        border: 1px solid #3F3C53;
+        border-radius: 12px;
+        color: var(--text-main);
+        font-family: inherit;
+    }
+
+    input::placeholder {
+        color: var(--text-muted);
+    }
+
+    ul {
+        list-style-type: none;
+        padding: 0;
+        text-align: left;
+    }
+
+    /* Apparence d'une tâche active */
+    li {
+        background-color: #2A273A;
+        color: var(--text-main);
+        margin-bottom: 12px;
+        padding: 16px;
+        border-radius: 12px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    /* Apparence d'une tâche finalisée */
+    .completed {
+        background-color: transparent;
+        border: 1px solid #3F3C53;
+        color: var(--text-muted);
+        text-decoration: line-through;
+    }
+
+    .delete-btn {
+        background-color: transparent;
+        color: red;
+        width: auto;
+        padding: 5px;
+        margin: 0;
+        font-weight: bold;
+    }
+
+    .profile-header {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 24px;
+    }
+
+    .profile-pic {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+
+    .profile-text {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .greeting-text {
+        color: var(--text-muted);
+        font-size: 14px;
+    }
+
+    .name-text {
+        color: var(--text-main);
+        font-size: 20px;
+        margin: 0;
+    }
