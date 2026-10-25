@@ -4,20 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>To-Do List Luserna</title>
-  <style>
-    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
-    .container { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); width: 100%; max-width: 400px; text-align: center; }
-    button { background-color: #4285f4; color: white; border: none; padding: 10px 15px; border-radius: 8px; font-size: 16px; cursor: pointer; margin: 10px 0; width: 100%; }
-    button:hover { background-color: #357ae8; }
-    .logout-btn { background-color: #dc3545; }
-    .logout-btn:hover { background-color: #c82333; }
-    input { width: calc(100% - 22px); padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 8px; }
-    ul { list-style-type: none; padding: 0; text-align: left; }
-    li { background: #f8f9fa; margin-bottom: 8px; padding: 12px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; }
-    .delete-btn { background-color: transparent; color: red; width: auto; padding: 5px; margin: 0; font-weight: bold; }
-    .completed { background-color: #e9ecef; color: #6c757d; text-decoration: line-through; }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
+<script src="app.js" defer></script>
 <body>
 
   <div class="container" id="login-section">
@@ -46,130 +35,5 @@
   <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore-compat.js"></script>
 
-  <script>
-    // VOTRE CLÉ SECRÈTE FIREBASE
-    const firebaseConfig = {
-      apiKey: "AIzaSyCYPppTlhDemeMUIyuK7cnEeR54_RvPCZE",
-      authDomain: "to-do-list-luserna.firebaseapp.com",
-      projectId: "to-do-list-luserna",
-      storageBucket: "to-do-list-luserna.firebasestorage.app",
-      messagingSenderId: "269338859205",
-      appId: "1:269338859205:web:08a89cde15bb8adce882ac",
-      measurementId: "G-B1JCNT5JYJ"
-    };
-
-    // Initialisation
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-    const db = firebase.firestore();
-    let currentUser = null;
-
-    // Vérifie la connexion
-    auth.onAuthStateChanged(user => {
-      if (user) {
-        currentUser = user;
-        document.getElementById('login-section').style.display = 'none';
-        document.getElementById('app-section').style.display = 'block';
-        document.getElementById('user-name').innerText = user.displayName.split(' ')[0];
-        loadTasks();
-      } else {
-        currentUser = null;
-        document.getElementById('login-section').style.display = 'block';
-        document.getElementById('app-section').style.display = 'none';
-      }
-    });
-
-    function login() {
-      const provider = new firebase.auth.GoogleAuthProvider();
-      auth.signInWithPopup(provider);
-    }
-
-    function logout() {
-      auth.signOut();
-    }
-
-    function addTask() {
-      const input = document.getElementById('task-input');
-      if (input.value.trim() === '') return;
-      
-      db.collection('users').doc(currentUser.uid).collection('tasks').add({
-        text: input.value,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-      });
-      input.value = '';
-    }
-
-function loadTasks() {
-  db.collection('users').doc(currentUser.uid).collection('tasks').orderBy('createdAt', 'desc')
-    .onSnapshot(snapshot => {
-      const list = document.getElementById('task-list');
-      const completedList = document.getElementById('completed-task-list');
-      const completedTitle = document.getElementById('completed-title');
-      
-      // On vide les deux listes à chaque mise à jour
-      list.innerHTML = ''; 
-      completedList.innerHTML = '';
-      let hasCompleted = false;
-      
-      snapshot.forEach(doc => {
-        const data = doc.data();
-        const li = document.createElement('li');
-        
-        // Applique le style grisé si la tâche est finalisée
-        if (data.completed) {
-          li.classList.add('completed');
-          hasCompleted = true;
-        }
-        
-        const taskText = document.createElement('span');
-        taskText.innerText = data.text;
-        li.appendChild(taskText);
-
-        const btnGroup = document.createElement('div');
-
-        // Bouton Valider / Annuler
-        const checkBtn = document.createElement('button');
-        checkBtn.innerText = data.completed ? '↩️' : '✅';
-        checkBtn.className = 'delete-btn';
-        checkBtn.onclick = () => {
-          // Inverse le statut actuel dans la base de données
-          doc.ref.update({ completed: !data.completed });
-        };
-        btnGroup.appendChild(checkBtn);
-
-        // Bouton Modifier
-        const editBtn = document.createElement('button');
-        editBtn.innerText = '✏️';
-        editBtn.className = 'delete-btn';
-        editBtn.onclick = () => {
-          const newText = prompt("Modifier la tâche :", data.text);
-          if (newText !== null && newText.trim() !== '') {
-            doc.ref.update({ text: newText });
-          }
-        };
-        btnGroup.appendChild(editBtn);
-        
-        // Bouton Supprimer
-        const delBtn = document.createElement('button');
-        delBtn.innerText = '✖';
-        delBtn.className = 'delete-btn';
-        delBtn.onclick = () => doc.ref.delete(); 
-        btnGroup.appendChild(delBtn);
-        
-        li.appendChild(btnGroup);
-        
-        // Trie visuellement dans la bonne liste
-        if (data.completed) {
-          completedList.appendChild(li); 
-        } else {
-          list.appendChild(li);
-        }
-      });
-
-      // Affiche le titre "Tâches finalisées" seulement s'il y en a au moins une
-      completedTitle.style.display = hasCompleted ? 'block' : 'none';
-    });
-}
-  </script>
 </body>
 </html>
