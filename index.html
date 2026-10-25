@@ -15,6 +15,7 @@
     ul { list-style-type: none; padding: 0; text-align: left; }
     li { background: #f8f9fa; margin-bottom: 8px; padding: 12px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; }
     .delete-btn { background-color: transparent; color: red; width: auto; padding: 5px; margin: 0; font-weight: bold; }
+    .completed { background-color: #e9ecef; color: #6c757d; text-decoration: line-through; }
   </style>
 </head>
 <body>
@@ -32,6 +33,10 @@
     <button onclick="addTask()">Ajouter la tâche</button>
 
     <ul id="task-list"></ul>
+
+<!-- Nouveaux éléments à ajouter -->
+<h3 id="completed-title" style="display: none; margin-top: 20px; font-size: 16px; color: #555;">Tâches finalisées</h3>
+<ul id="completed-task-list"></ul>
     
     <button class="logout-btn" onclick="logout()">Se déconnecter</button>
   </div>
@@ -98,28 +103,48 @@ function loadTasks() {
   db.collection('users').doc(currentUser.uid).collection('tasks').orderBy('createdAt', 'desc')
     .onSnapshot(snapshot => {
       const list = document.getElementById('task-list');
+      const completedList = document.getElementById('completed-task-list');
+      const completedTitle = document.getElementById('completed-title');
+      
+      // On vide les deux listes à chaque mise à jour
       list.innerHTML = ''; 
+      completedList.innerHTML = '';
+      let hasCompleted = false;
       
       snapshot.forEach(doc => {
+        const data = doc.data();
         const li = document.createElement('li');
         
-        // Texte de la tâche
+        // Applique le style grisé si la tâche est finalisée
+        if (data.completed) {
+          li.classList.add('completed');
+          hasCompleted = true;
+        }
+        
         const taskText = document.createElement('span');
-        taskText.innerText = doc.data().text;
+        taskText.innerText = data.text;
         li.appendChild(taskText);
 
-        // Conteneur pour grouper les boutons à droite
         const btnGroup = document.createElement('div');
+
+        // Bouton Valider / Annuler
+        const checkBtn = document.createElement('button');
+        checkBtn.innerText = data.completed ? '↩️' : '✅';
+        checkBtn.className = 'delete-btn';
+        checkBtn.onclick = () => {
+          // Inverse le statut actuel dans la base de données
+          doc.ref.update({ completed: !data.completed });
+        };
+        btnGroup.appendChild(checkBtn);
 
         // Bouton Modifier
         const editBtn = document.createElement('button');
         editBtn.innerText = '✏️';
-        editBtn.className = 'delete-btn'; // Réutilisation du style transparent existant
+        editBtn.className = 'delete-btn';
         editBtn.onclick = () => {
-          // Ouvre une fenêtre popup pour modifier le texte
-          const newText = prompt("Modifier la tâche :", doc.data().text);
+          const newText = prompt("Modifier la tâche :", data.text);
           if (newText !== null && newText.trim() !== '') {
-            doc.ref.update({ text: newText }); // Met à jour la base de données
+            doc.ref.update({ text: newText });
           }
         };
         btnGroup.appendChild(editBtn);
@@ -132,8 +157,17 @@ function loadTasks() {
         btnGroup.appendChild(delBtn);
         
         li.appendChild(btnGroup);
-        list.appendChild(li);
+        
+        // Trie visuellement dans la bonne liste
+        if (data.completed) {
+          completedList.appendChild(li); 
+        } else {
+          list.appendChild(li);
+        }
       });
+
+      // Affiche le titre "Tâches finalisées" seulement s'il y en a au moins une
+      completedTitle.style.display = hasCompleted ? 'block' : 'none';
     });
 }
   </script>
