@@ -94,26 +94,48 @@
       input.value = '';
     }
 
-    function loadTasks() {
-      db.collection('users').doc(currentUser.uid).collection('tasks').orderBy('createdAt', 'desc')
-        .onSnapshot(snapshot => {
-          const list = document.getElementById('task-list');
-          list.innerHTML = ''; 
-          
-          snapshot.forEach(doc => {
-            const li = document.createElement('li');
-            li.innerText = doc.data().text;
-            
-            const delBtn = document.createElement('button');
-            delBtn.innerText = '✖';
-            delBtn.className = 'delete-btn';
-            delBtn.onclick = () => doc.ref.delete(); 
-            
-            li.appendChild(delBtn);
-            list.appendChild(li);
-          });
-        });
-    }
+function loadTasks() {
+  db.collection('users').doc(currentUser.uid).collection('tasks').orderBy('createdAt', 'desc')
+    .onSnapshot(snapshot => {
+      const list = document.getElementById('task-list');
+      list.innerHTML = ''; 
+      
+      snapshot.forEach(doc => {
+        const li = document.createElement('li');
+        
+        // Texte de la tâche
+        const taskText = document.createElement('span');
+        taskText.innerText = doc.data().text;
+        li.appendChild(taskText);
+
+        // Conteneur pour grouper les boutons à droite
+        const btnGroup = document.createElement('div');
+
+        // Bouton Modifier
+        const editBtn = document.createElement('button');
+        editBtn.innerText = '✏️';
+        editBtn.className = 'delete-btn'; // Réutilisation du style transparent existant
+        editBtn.onclick = () => {
+          // Ouvre une fenêtre popup pour modifier le texte
+          const newText = prompt("Modifier la tâche :", doc.data().text);
+          if (newText !== null && newText.trim() !== '') {
+            doc.ref.update({ text: newText }); // Met à jour la base de données
+          }
+        };
+        btnGroup.appendChild(editBtn);
+        
+        // Bouton Supprimer
+        const delBtn = document.createElement('button');
+        delBtn.innerText = '✖';
+        delBtn.className = 'delete-btn';
+        delBtn.onclick = () => doc.ref.delete(); 
+        btnGroup.appendChild(delBtn);
+        
+        li.appendChild(btnGroup);
+        list.appendChild(li);
+      });
+    });
+}
   </script>
 </body>
 </html>
