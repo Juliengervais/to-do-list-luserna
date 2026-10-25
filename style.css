@@ -1,11 +1,67 @@
-    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
-    .container { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); width: 100%; max-width: 400px; text-align: center; }
-    button { background-color: #4285f4; color: white; border: none; padding: 10px 15px; border-radius: 8px; font-size: 16px; cursor: pointer; margin: 10px 0; width: 100%; }
-    button:hover { background-color: #357ae8; }
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+:root {
+  --bg-main: #0F0E17;
+  --bg-card: #1E1C2A;
+  --purple-accent: #7C3AED;
+  --text-main: #FFFFFF;
+  --text-muted: #9CA3AF;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+  margin: 0;
+}
+
+.container {
+  background-color: var(--bg-card);
+  width: 100%;
+  max-width: 400px;
+  padding: 30px;
+  border-radius: 24px;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+}
+    /* Boutons principaux */
+button {
+  background-color: var(--purple-accent);
+  color: var(--text-main);
+  border: none;
+  padding: 14px 20px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.2s ease;
+  margin-bottom: 10px;
+}
+
+button:hover {
+  background-color: #6D28D9; /* Un violet légèrement plus foncé */
+}
     .logout-btn { background-color: #dc3545; }
     .logout-btn:hover { background-color: #c82333; }
-    input { width: calc(100% - 22px); padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 8px; }
-    ul { list-style-type: none; padding: 0; text-align: left; }
-    li { background: #f8f9fa; margin-bottom: 8px; padding: 12px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; }
-    .delete-btn { background-color: transparent; color: red; width: auto; padding: 5px; margin: 0; font-weight: bold; }
-    .completed { background-color: #e9ecef; color: #6c757d; text-decoration: line-through; }
+   /* Champ de saisie (Input) */
+input {
+  width: calc(100% - 32px);
+  padding: 14px 16px;
+  margin-bottom: 16px;
+  background-color: #2A273A;
+  border: 1px solid #3F3C53;
+  border-radius: 12px;
+  color: var(--text-main);
+  font-family: inherit;
+}
+
+input::placeholder {
+  color: var(--text-muted);
+}
+ul { list-style-type: none; padding: 0; text-align: left; }
+li { background: #f8f9fa; margin-bottom: 8px; padding: 12px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; }
+.delete-btn { background-color: transparent; color: red; width: auto; padding: 5px; margin: 0; font-weight: bold; }
+.completed { background-color: #e9ecef; color: #6c757d; text-decoration: line-through; }
