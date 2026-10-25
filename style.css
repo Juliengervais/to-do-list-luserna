@@ -62,6 +62,23 @@ input::placeholder {
   color: var(--text-muted);
 }
 ul { list-style-type: none; padding: 0; text-align: left; }
-li { background: #f8f9fa; margin-bottom: 8px; padding: 12px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; }
+/* Apparence d'une tâche active */
+li {
+  background-color: #2A273A;
+  color: var(--text-main);
+  margin-bottom: 12px;
+  padding: 16px;
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Apparence d'une tâche finalisée */
+.completed {
+  background-color: transparent;
+  border: 1px solid #3F3C53;
+  color: var(--text-muted);
+  text-decoration: line-through;
+}
 .delete-btn { background-color: transparent; color: red; width: auto; padding: 5px; margin: 0; font-weight: bold; }
-.completed { background-color: #e9ecef; color: #6c757d; text-decoration: line-through; }
